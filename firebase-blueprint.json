@@ -1,0 +1,91 @@
+{
+  "entities": {
+    "CourseRequest": {
+      "title": "CourseRequest",
+      "description": "Represents a student's access request for a premium AI course",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The unique Firebase Authentication UID of the student"
+        },
+        "userEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "The email address of the student"
+        },
+        "courseId": {
+          "type": "string",
+          "description": "The custom string ID of the course requested"
+        },
+        "courseTitle": {
+          "type": "string",
+          "description": "The title of the requested course"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "accepted", "declined"],
+          "description": "The current verification and activation status of the request"
+        },
+        "requestedAt": {
+          "type": "number",
+          "description": "The timestamp when the request was made"
+        }
+      },
+      "required": ["userId", "userEmail", "courseId", "courseTitle", "status", "requestedAt"]
+    },
+    "ActivationKey": {
+      "title": "ActivationKey",
+      "description": "Represents a generated unique subscription license key/code",
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "The unique code like AI45NP"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["unused", "used"],
+          "description": "Whether the key has been claimed"
+        },
+        "duration": {
+          "type": "string",
+          "enum": ["1month", "1year"],
+          "description": "Duration of the license"
+        },
+        "createdAt": {
+          "type": "number",
+          "description": "Timestamp when key was created"
+        },
+        "claimedByEmail": {
+          "type": "string",
+          "format": "email",
+          "description": "The email of the student who claimed the key"
+        },
+        "claimedByUid": {
+          "type": "string",
+          "description": "The Firebase Auth UID of the student who claimed the key"
+        },
+        "claimedAt": {
+          "type": "number",
+          "description": "Timestamp when the key was claimed"
+        },
+        "expiresAt": {
+          "type": "number",
+          "description": "Timestamp when the license expires"
+        }
+      },
+      "required": ["code", "status", "duration", "createdAt"]
+    }
+  },
+  "firestore": {
+    "course_requests/{requestId}": {
+      "schema": "CourseRequest",
+      "description": "Collection tracking student payment and activation course requests"
+    },
+    "activation_keys/{code}": {
+      "schema": "ActivationKey",
+      "description": "Collection tracking subscription activation codes"
+    }
+  }
+}

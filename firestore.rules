@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper to check if user is signed in
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Helper to check if user is the administrator
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email.lower() == 'ai.clipzone.edu@gmail.com' ||
+        request.auth.token.email.lower() == 'rajababum426@gmail.com' || 
+        request.auth.token.email.lower().matches('^admin.*')
+      );
+    }
+
+    // Security rules for student course access requests
+    match /course_requests/{requestId} {
+      // Students can view their own requests, admins can view all
+      allow read: if isSignedIn() && (
+        resource == null || 
+        resource.data.userId == request.auth.uid || 
+        isAdmin()
+      );
+      
+      // Any signed-in user can submit their own request
+      allow create: if isSignedIn() && 
+        request.resource.data.userId == request.auth.uid;
+      
+      // Admins can update any request (e.g. approve/decline). 
+      // Students can only update if they do not modify the verification status.
+      allow update: if isSignedIn() && (
+        isAdmin() || 
+        (resource.data.userId == request.auth.uid && request.resource.data.status == resource.data.status)
+      );
+      
+      // Only admins can delete requests
+      allow delete: if isSignedIn() && isAdmin();
+    }
+
+    // Security rules for premium activation/license keys
+    match /activation_keys/{code} {
+      // Any signed-in student can read/lookup keys, and admins can view all
+      allow read: if isSignedIn();
+      
+      // Only admins can create or delete keys
+      allow create, delete: if isSignedIn() && isAdmin();
+      
+      // Admins can update. Students can update ONLY IF the key is currently unused, 
+      // and they are setting it as used with their own verified email and UID.
+      allow update: if isSignedIn() && (
+        isAdmin() || (
+          resource.data.status == 'unused' &&
+          request.resource.data.status == 'used' &&
+          request.resource.data.claimedByEmail.lower() == request.auth.token.email.lower() &&
+          request.resource.data.claimedByUid == request.auth.uid
+        )
+      );
+    }
+
+    // Global default catch-all: deny all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
