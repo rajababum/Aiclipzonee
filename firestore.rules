@@ -60,6 +60,13 @@ service cloud.firestore {
       );
     }
 
+    // Security rules for student video progress
+    match /user_progress/{userId} {
+      allow read: if isSignedIn() && (userId == request.auth.uid || isAdmin());
+      allow create, update: if isSignedIn() && (userId == request.auth.uid || isAdmin());
+      allow delete: if isSignedIn() && isAdmin();
+    }
+
     // Global default catch-all: deny all other paths
     match /{document=**} {
       allow read, write: if false;
