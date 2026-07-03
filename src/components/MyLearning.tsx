@@ -643,42 +643,42 @@ export default function MyLearning({ user, onToast }: MyLearningProps) {
           </div>
         )}
 
-        {/* Main Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Video Area (2/3 width on desktop) */}
-          <div className="lg:col-span-2 space-y-6">
-            {videoToPlay ? (
-              <div className="space-y-4">
-                {/* Embedded Video */}
-                <div className="w-full aspect-video rounded-3xl overflow-hidden bg-black shadow-2xl border border-slate-850 relative">
-                  <iframe
-                    src={videoToPlay.videoUrl.includes('drive.google.com')
-                      ? videoToPlay.videoUrl.replace(/\/view(\?.*)?$/, '/preview').replace(/\/view.*/, '/preview')
-                      : `${videoToPlay.videoUrl}?autoplay=1&rel=0`
-                    }
-                    title={videoToPlay.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    referrerPolicy="no-referrer"
-                    className="absolute inset-0 w-full h-full border-none"
-                  />
+        {/* Main Dashboard Layout */}
+        <div className="space-y-6">
+          {/* Main Video Area (Full Width) */}
+          {videoToPlay ? (
+            <div className="space-y-4">
+              {/* Embedded Video */}
+              <div className="w-full aspect-video rounded-3xl overflow-hidden bg-black shadow-2xl border border-slate-850 relative">
+                <iframe
+                  src={videoToPlay.videoUrl.includes('drive.google.com')
+                    ? videoToPlay.videoUrl.replace(/\/view(\?.*)?$/, '/preview').replace(/\/view.*/, '/preview')
+                    : `${videoToPlay.videoUrl}?autoplay=1&rel=0`
+                  }
+                  title={videoToPlay.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  referrerPolicy="no-referrer"
+                  className="absolute inset-0 w-full h-full border-none"
+                />
+              </div>
+
+              {/* Video Info and Toggle Completion */}
+              <div className="p-5 bg-slate-950/80 rounded-2xl border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">
+                    Currently Streaming
+                  </span>
+                  <h4 className="text-sm md:text-base font-extrabold text-slate-100 leading-tight">
+                    {courseToPlay?.title} - {videoToPlay.title}
+                  </h4>
+                  <p className="text-xs text-slate-400 font-semibold flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-slate-500" /> Duration: {videoToPlay.duration}
+                  </p>
                 </div>
 
-                {/* Video Info and Toggle Completion */}
-                <div className="p-4 bg-slate-950/80 rounded-2xl border border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-purple-400">
-                      Currently Streaming
-                    </span>
-                    <h4 className="text-sm md:text-base font-extrabold text-slate-100 leading-tight">
-                      {videoToPlay.title}
-                    </h4>
-                    <p className="text-xs text-slate-400 font-semibold flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-slate-500" /> Duration: {videoToPlay.duration}
-                    </p>
-                  </div>
-
-                  {/* Toggle button */}
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Toggle completion button */}
                   <button
                     onClick={() => toggleVideoCompletion(courseToPlay.id, videoToPlay.title)}
                     className={`flex items-center gap-2 text-xs font-black px-4 py-2.5 rounded-xl transition duration-150 cursor-pointer border shrink-0 ${
@@ -688,165 +688,90 @@ export default function MyLearning({ user, onToast }: MyLearningProps) {
                     }`}
                   >
                     <CheckCircle className={`w-4 h-4 ${completedVideos[`${courseToPlay.id}_${videoToPlay.title}`] ? 'text-emerald-400 fill-emerald-950/50' : 'text-slate-500'}`} />
-                    {completedVideos[`${courseToPlay.id}_${videoToPlay.title}`] ? 'Completed' : 'Mark as Completed'}
+                    {completedVideos[`${courseToPlay.id}_${videoToPlay.title}`] ? 'Completed (हेरिसकेको)' : 'Mark as Completed (हेरेको जनाउनुहोस्)'}
                   </button>
                 </div>
               </div>
-            ) : (
-              <div className="text-center py-20 bg-slate-950/50 border border-dashed border-slate-800 rounded-3xl">
-                <p className="text-slate-400 font-semibold text-xs">No video selected to play.</p>
-              </div>
-            )}
+            </div>
+          ) : (
+            <div className="text-center py-20 bg-slate-950/50 border border-dashed border-slate-800 rounded-3xl">
+              <p className="text-slate-400 font-semibold text-xs">No video selected to play.</p>
+            </div>
+          )}
 
-            {/* Enrolled Courses & Progress Overview Cards Section */}
-            <div className="pt-2">
-              <h4 className="text-xs font-black text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-purple-400" /> मेरो कोर्सहरू र प्रगतिको विवरण (My Courses & Progress)
-              </h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {myCourses.map((course) => {
-                  const progress = getCourseProgress(course.id);
-                  const licenseInfo = getLicenseDaysRemaining(course.id);
-                  const isCurrent = courseToPlay.id === course.id;
+          {/* Enrolled Courses & Progress Overview Cards Section */}
+          <div className="pt-2">
+            <h4 className="text-xs font-black text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-purple-400" /> मेरो कोर्सहरू र प्रगतिको विवरण (My Courses & Progress)
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {myCourses.map((course) => {
+                const progress = getCourseProgress(course.id);
+                const licenseInfo = getLicenseDaysRemaining(course.id);
+                const isCurrent = courseToPlay.id === course.id;
 
-                  return (
-                    <div 
-                      key={course.id}
-                      onClick={() => handleSelectCourseToPlay(course)}
-                      className={`p-4 rounded-2xl border transition duration-150 cursor-pointer flex flex-col justify-between gap-4 ${
-                        isCurrent 
-                          ? 'bg-slate-950/90 border-purple-500/40 shadow-lg shadow-purple-950/25' 
-                          : 'bg-slate-950/30 border-slate-800/80 hover:bg-slate-950/55'
-                      }`}
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-start justify-between gap-2">
-                          <h5 className="text-xs font-black text-slate-100 line-clamp-2">
-                            {course.title}
-                          </h5>
-                          {isCurrent && (
-                            <span className="text-[8px] font-black uppercase tracking-widest bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded border border-purple-500/30 shrink-0">
-                              Active
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Days Left and Progress Stats */}
-                        <div className="flex items-center justify-between gap-2 pt-1">
-                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400">
-                            📚 {progress.count}/{progress.total} Completed
+                return (
+                  <div 
+                    key={course.id}
+                    onClick={() => handleSelectCourseToPlay(course)}
+                    className={`p-5 rounded-2xl border transition duration-150 cursor-pointer flex flex-col justify-between gap-4 ${
+                      isCurrent 
+                        ? 'bg-slate-950/95 border-purple-500/50 shadow-lg shadow-purple-950/25' 
+                        : 'bg-slate-950/30 border-slate-800/80 hover:bg-slate-950/55'
+                    }`}
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <h5 className="text-xs font-black text-slate-100 line-clamp-2">
+                          {course.title}
+                        </h5>
+                        {isCurrent && (
+                          <span className="text-[8px] font-black uppercase tracking-widest bg-purple-500/20 text-purple-400 px-2 py-0.5 rounded border border-purple-500/30 shrink-0">
+                            Active
                           </span>
-                          <span className={`inline-flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-lg ${
-                            licenseInfo.days <= 7 
-                              ? 'bg-rose-950/50 text-rose-400 border border-rose-900/30 animate-pulse' 
-                              : 'bg-indigo-950/50 text-indigo-300 border border-indigo-900/30'
-                          }`}>
-                            📅 {licenseInfo.text}
-                          </span>
-                        </div>
+                        )}
                       </div>
 
-                      {/* Course Progress Bar */}
-                      <div className="space-y-1.5">
-                        <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
-                          <span>Progress</span>
-                          <span className="text-purple-400">{progress.percent}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-850">
-                          <div 
-                            className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full transition-all duration-300"
-                            style={{ width: `${progress.percent}%` }}
-                          />
-                        </div>
+                      {/* Days Left and Progress Stats */}
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-400">
+                          📚 {progress.count}/{progress.total} Video Completed
+                        </span>
+                        <span className={`inline-flex items-center gap-1 text-[10px] font-black px-2.5 py-1 rounded-lg ${
+                          licenseInfo.days <= 7 
+                            ? 'bg-rose-950/50 text-rose-400 border border-rose-900/30 animate-pulse' 
+                            : 'bg-indigo-950/50 text-indigo-300 border border-indigo-900/30'
+                        }`}>
+                          📅 {licenseInfo.text}
+                        </span>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+
+                    {/* Course Progress Bar */}
+                    <div className="space-y-1.5 pt-2 border-t border-slate-900">
+                      <div className="flex justify-between text-[10px] font-black uppercase tracking-wider text-slate-400">
+                        <span>Course Completion</span>
+                        <span className="text-purple-400">{progress.percent}%</span>
+                      </div>
+                      <div className="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden border border-slate-850">
+                        <div 
+                          className="h-full bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full transition-all duration-300"
+                          style={{ width: `${progress.percent}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          {/* Right Sidebar (1/3 width on desktop) - Playlist */}
-          <div className="space-y-4">
-            <div className="bg-slate-950/60 rounded-2xl border border-slate-800/80 p-4 space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                <h4 className="text-[11px] font-black uppercase tracking-widest text-slate-300 flex items-center gap-1.5">
-                  <Tv className="w-3.5 h-3.5 text-purple-400" /> Course Playlist
-                </h4>
-                <span className="text-[9px] font-black px-2 py-1 bg-slate-900 text-slate-400 rounded-lg border border-slate-800 font-mono">
-                  {courseToPlay.videos ? courseToPlay.videos.length : 0} Lectures
-                </span>
-              </div>
-
-              {/* Playlist items */}
-              <div className="space-y-2 max-h-[350px] overflow-y-auto pr-1 scrollbar-none">
-                {courseToPlay.videos && courseToPlay.videos.map((vid, idx) => {
-                  const isPlaying = videoToPlay?.title === vid.title;
-                  const isCompleted = completedVideos[`${courseToPlay.id}_${vid.title}`];
-
-                  return (
-                    <div
-                      key={vid.title}
-                      onClick={() => setActiveVideo(vid)}
-                      className={`group p-2.5 rounded-xl border transition duration-150 cursor-pointer flex items-center justify-between gap-3 ${
-                        isPlaying
-                          ? 'bg-purple-950/30 border-purple-500/40'
-                          : 'bg-slate-900/40 border-slate-850 hover:bg-slate-900/80'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        {/* Play/Check marker */}
-                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
-                          isPlaying 
-                            ? 'bg-purple-600 text-white' 
-                            : isCompleted 
-                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-900/50' 
-                              : 'bg-slate-950 text-slate-500 border border-slate-850 group-hover:border-slate-700'
-                        }`}>
-                          {isCompleted ? (
-                            <Check className="w-3 h-3 font-black" />
-                          ) : (
-                            <span className="text-[10px] font-bold font-mono">{idx + 1}</span>
-                          )}
-                        </div>
-                        <div className="min-w-0">
-                          <p className={`text-[11px] font-extrabold truncate ${isPlaying ? 'text-purple-300' : 'text-slate-300'}`}>
-                            {vid.title}
-                          </p>
-                          <span className="text-[9px] text-slate-500 font-bold font-mono">
-                            {vid.duration}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Small check icon to toggle status */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleVideoCompletion(courseToPlay.id, vid.title);
-                        }}
-                        className={`p-1 rounded-md border transition shrink-0 ${
-                          isCompleted
-                            ? 'bg-emerald-950/80 border-emerald-500/30 text-emerald-400 hover:bg-rose-950/40 hover:border-rose-500/30 hover:text-rose-400'
-                            : 'bg-slate-950 border-slate-850 text-slate-600 hover:border-slate-750 hover:text-slate-400'
-                        }`}
-                        title={isCompleted ? "Mark as Incomplete" : "Mark as Completed"}
-                      >
-                        <Check className="w-3 h-3" />
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Quick Helper Tips */}
-            <div className="p-4 bg-purple-950/10 border border-purple-900/20 rounded-2xl flex gap-2.5">
-              <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
-              <p className="text-[10px] font-semibold leading-relaxed text-purple-300">
-                भिडियो हेरिसकेपछि <strong>Mark as Completed</strong> मा क्लिक गर्नुहोस्। प्रगतिको सूचक १००% पुरा भएपछि कोर्स पुरा भएको मानिनेछ।
-              </p>
-            </div>
+          {/* Quick Helper Tips */}
+          <div className="p-4 bg-purple-950/10 border border-purple-900/20 rounded-2xl flex gap-2.5">
+            <Sparkles className="w-4 h-4 text-purple-400 shrink-0" />
+            <p className="text-[10px] font-semibold leading-relaxed text-purple-300">
+              भिडियो हेरिसकेपछि <strong>Mark as Completed</strong> मा क्लिक गर्नुहोस्। प्रगतिको सूचक १००% पुरा भएपछि कोर्स पुरा भएको मानिनेछ।
+            </p>
           </div>
         </div>
       </div>
