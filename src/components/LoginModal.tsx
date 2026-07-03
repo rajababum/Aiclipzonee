@@ -48,6 +48,8 @@ export default function LoginModal({ isOpen, onClose, onSuccess, onMockLogin }: 
       console.error(err);
       if (err.code === 'auth/popup-blocked') {
         setError('Google Login popup was blocked. Please enable popups or try again.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        setError('Google Login is not authorized for this preview URL. Please Register/Login using Email & Password below (which works on all domains), or use the "Demo Student Bypass" button below.');
       } else {
         setError(err.message || 'Google Sign-In failed.');
       }
@@ -299,6 +301,23 @@ export default function LoginModal({ isOpen, onClose, onSuccess, onMockLogin }: 
                 )}
               </button>
             </form>
+
+            <div className="relative flex py-2 items-center mt-5">
+              <div className="flex-grow border-t border-slate-100"></div>
+              <span className="flex-shrink mx-3 text-[10px] text-slate-400 font-black uppercase tracking-wider">
+                or use guest bypass
+              </span>
+              <div className="flex-grow border-t border-slate-100"></div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="w-full bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 font-extrabold py-3 px-4 rounded-xl border border-amber-500/30 transition duration-150 flex items-center justify-center gap-2 cursor-pointer text-xs"
+            >
+              <Sparkles className="w-4 h-4 text-amber-600 animate-pulse" />
+              Demo Student Bypass Login (Instant Access)
+            </button>
 
             <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-500">
               {isSignUp ? (

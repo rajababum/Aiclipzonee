@@ -425,6 +425,167 @@ export default function MyLearning({ user, onToast }: MyLearningProps) {
     }
   };
 
+  // Compute unlocked courses
+  const userEmailNormalized = (user.email || '').toLowerCase().trim();
+  const keyLicenses: CourseRequest[] = [];
+  claimedKeys.filter(k => k.status === 'used').forEach(key => {
+    if (key.courseId === 'all') {
+      COURSES.forEach(course => {
+        keyLicenses.push({
+          id: `key-virtual-${key.code}-${course.id}`,
+          userId: user.uid,
+          userEmail: user.email || '',
+          courseId: course.id,
+          courseTitle: course.title,
+          status: 'accepted' as const,
+          requestedAt: key.claimedAt || Date.now(),
+          expiresAt: key.expiresAt
+        });
+      });
+    } else if (key.courseId) {
+      const targetCourse = COURSES.find(c => c.id === key.courseId);
+      if (targetCourse) {
+        keyLicenses.push({
+          id: `key-virtual-${key.code}-${targetCourse.id}`,
+          userId: user.uid,
+          userEmail: user.email || '',
+          courseId: targetCourse.id,
+          courseTitle: targetCourse.title,
+          status: 'accepted' as const,
+          requestedAt: key.claimedAt || Date.now(),
+          expiresAt: key.expiresAt
+        });
+      }
+    }
+  });
+
+  const myApprovedLicenses = [
+    ...requests.filter(r => r.status === 'accepted'),
+    ...keyLicenses
+  ];
+
+  const myCourses = COURSES.filter(course => 
+    myApprovedLicenses.some(license => license.courseId === course.id)
+  );
+
+  const hasUnlockedCourses = myCourses.length > 0;
+
+  // Render the clean early-return view if user has unlocked/submitted courses
+  if (hasUnlockedCourses) {
+    const courseToPlay = activeCourse || myCourses[0];
+    const videoToPlay = activeVideo || (courseToPlay?.videos && courseToPlay.videos[0]) || null;
+
+    // Handle course selection for multi-course scenario
+    const handleSelectCourseToPlay = (course: Course) => {
+      setActiveCourse(course);
+      if (course.videos && course.videos.length > 0) {
+        setActiveVideo(course.videos[0]);
+      }
+    };
+
+    return (
+      <div className="bg-slate-900 rounded-3xl p-5 md:p-8 shadow-2xl border border-slate-800 text-white">
+        {/* Student Welcome Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800 mb-6">
+          <div>
+            <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest block mb-1">
+              ✨ Premium Active Student Mode
+            </span>
+            <h3 className="text-xl font-extrabold text-slate-100 flex items-center gap-2">
+              तपाईंलाई स्वागत छ, {user.displayName || user.email?.split('@')[0]}! 👋
+            </h3>
+            <p className="text-slate-400 text-xs font-semibold mt-1">
+              Logged in: <span className="text-purple-300 font-bold">{user.email}</span>
+            </p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-1.5 text-xs font-bold text-rose-400 bg-rose-950/40 hover:bg-rose-950 hover:text-rose-300 px-4 py-2.5 rounded-xl transition duration-200 cursor-pointer border border-rose-900/30 self-start sm:self-auto"
+          >
+            <LogOut className="w-4 h-4" /> Log Out
+          </button>
+        </div>
+
+        {/* Multi-course selection bar (ONLY shown if the user has unlocked more than 1 course) */}
+        {myCourses.length > 1 && (
+          <div className="mb-6 bg-slate-950/50 p-3 rounded-2xl border border-slate-800 flex items-center gap-3">
+            <span className="text-xs font-bold text-slate-400 shrink-0 uppercase tracking-wider pl-1">
+              My Courses:
+            </span>
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {myCourses.map((c) => {
+                const isSelected = courseToPlay?.id === c.id;
+                return (
+                  <button
+                    key={c.id}
+                    onClick={() => handleSelectCourseToPlay(c)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-extrabold whitespace-nowrap transition cursor-pointer ${
+                      isSelected 
+                        ? 'bg-purple-700 text-white border border-purple-600' 
+                        : 'bg-slate-900 hover:bg-slate-850 text-slate-300 border border-slate-800'
+                    }`}
+                  >
+                    {c.title}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Video Player Display */}
+        {videoToPlay ? (
+          <div className="space-y-5">
+            {/* Embedded IFrame Player Box */}
+            <div className="w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-2xl border border-slate-800 relative">
+              <iframe
+                src={videoToPlay.videoUrl.includes('drive.google.com')
+                  ? videoToPlay.videoUrl.replace(/\/view(\?.*)?$/, '/preview').replace(/\/view.*/, '/preview')
+                  : `${videoToPlay.videoUrl}?autoplay=1&rel=0`
+                }
+                title={videoToPlay.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="no-referrer"
+                className="absolute inset-0 w-full h-full border-none"
+              />
+            </div>
+
+            {/* Premium Video Info metadata and label */}
+            <div className="p-4 bg-slate-950/80 rounded-2xl border border-slate-850 flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-700/20 border border-purple-500/30 flex items-center justify-center shrink-0 text-purple-400">
+                  <Play className="w-4 h-4 fill-purple-400" />
+                </div>
+                <div>
+                  <span className="block text-[10px] font-black uppercase tracking-widest text-purple-400">
+                    Currently Playing
+                  </span>
+                  <h4 className="text-sm md:text-base font-extrabold text-slate-100 mt-0.5">
+                    {courseToPlay?.title} - {videoToPlay.title}
+                  </h4>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3 self-end md:self-auto shrink-0">
+                <span className="text-xs font-semibold text-slate-400 font-mono bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+                  Duration: {videoToPlay.duration}
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/50 px-3 py-1.5 rounded-lg border border-emerald-500/20">
+                  <CheckCircle className="w-3.5 h-3.5" /> Stream Active
+                </span>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-16 bg-slate-950/50 border border-dashed border-slate-800 rounded-2xl">
+            <p className="text-slate-400 text-sm font-semibold">No video available for this premium course.</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white rounded-3xl p-6 md:p-10 shadow-xl border border-slate-100">
       
