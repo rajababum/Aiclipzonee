@@ -374,62 +374,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* Hero Header Presentation */}
-      <div className="relative py-12 md:py-20 bg-linear-to-b from-indigo-950 to-slate-950 text-white overflow-hidden">
-        {/* Background ambient glows */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full filter blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full filter blur-3xl pointer-events-none"></div>
-
-        <div className="max-w-4xl mx-auto text-center px-4 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="inline-block bg-purple-500/20 text-purple-300 font-bold text-xs md:text-sm uppercase tracking-widest px-4 py-1.5 rounded-full border border-purple-500/30 mb-4">
-              🔥 SPECIAL LIMITED TIME OFFER • UP TO 80% OFF
-            </span>
-          </motion.div>
-
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight md:leading-none text-transparent bg-clip-text bg-linear-to-r from-white via-slate-100 to-amber-300"
-          >
-            भविष्यको लागि AI Skills सिक्नुहोस्!
-          </motion.h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-6 text-base md:text-xl text-slate-300 max-w-2xl mx-auto font-medium"
-          >
-            Nepal's absolute highest quality recorded AI courses. 30+ AI tools, video editing, image generation, songs creation, and professional animated slide presentations in clear Nepali & Hindi.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-10 flex flex-wrap justify-center gap-4 text-xs md:text-sm"
-          >
-            <div className="flex items-center gap-2 bg-slate-900/60 border border-slate-800 px-4 py-2.5 rounded-2xl">
-              <ShieldCheck className="w-5 h-5 text-emerald-400" />
-              <span>आजीवन पहुँच (Lifetime Access)</span>
-            </div>
-            <div className="flex items-center gap-2 bg-slate-900/60 border border-slate-800 px-4 py-2.5 rounded-2xl">
-              <GraduationCap className="w-5 h-5 text-purple-400" />
-              <span>प्रमाणपत्र सहित (With Certificate)</span>
-            </div>
-            <div className="flex items-center gap-2 bg-slate-900/60 border border-slate-800 px-4 py-2.5 rounded-2xl">
-              <Headphones className="w-5 h-5 text-amber-400" />
-              <span>२४/७ विशेषज्ञ सपोर्ट (24/7 Expert Support)</span>
-            </div>
-          </motion.div>
-        </div>
-      </div>
 
       {/* Main Container for Course List */}
       <main className="max-w-6xl mx-auto px-4 py-12">
@@ -466,7 +410,7 @@ export default function App() {
               )}
 
               {/* Course Thumbnail Image */}
-              <div className="relative pt-12 md:pt-14 aspect-video overflow-hidden bg-slate-950">
+              <div className="relative aspect-video overflow-hidden bg-slate-950">
                 <img 
                   src={course.image} 
                   alt={course.title}

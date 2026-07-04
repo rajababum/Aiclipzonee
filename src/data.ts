@@ -17,11 +17,7 @@ export const COURSES: Course[] = [
     isPopular: true,
     popularText: "🔥 MOST POPULAR - BEST SELLER",
     videos: [
-      { title: "Introduction to generative AI models & prompt writing", duration: "12:15", videoUrl: "https://drive.google.com/file/d/1WW0o2qYql7EvBurHOhUNxsvw9_0qjnm7/preview" },
-      { title: "ChatGPT Advanced Prompts & custom instructions", duration: "18:40", videoUrl: "https://drive.google.com/file/d/1WW0o2qYql7EvBurHOhUNxsvw9_0qjnm7/preview" },
-      { title: "Midjourney Mastery: Crafting cinematic photographic illustrations", duration: "24:10", videoUrl: "https://drive.google.com/file/d/1WW0o2qYql7EvBurHOhUNxsvw9_0qjnm7/preview" },
-      { title: "Runway Gen-2 & Gen-3 text to realistic cinematic videos", duration: "20:05", videoUrl: "https://drive.google.com/file/d/1WW0o2qYql7EvBurHOhUNxsvw9_0qjnm7/preview" },
-      { title: "ElevenLabs: Professional voice cloning and sound design", duration: "15:30", videoUrl: "https://drive.google.com/file/d/1WW0o2qYql7EvBurHOhUNxsvw9_0qjnm7/preview" }
+      { title: "Introduction to generative AI models & prompt writing", duration: "12:15", videoUrl: "https://drive.google.com/file/d/1WW0o2qYql7EvBurHOhUNxsvw9_0qjnm7/preview" }
     ]
   },
   {
@@ -38,10 +34,7 @@ export const COURSES: Course[] = [
     ],
     image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiamlf7uMKucGgjA_KFqVtclRDjBq0Y9jA6vvf_xKLmgkfiWVfvRdnnRWYHQnpH8xGzHE_sdfzhThAHtR9YLfNqqTDDoH5aJdYWaZAzD7VFWatJueGo7AShTCKUUOc1jKppsgclGgyifi2nXqmMNDR_1oyzfiJsTzJ60V6r-UscNlCFxibxx0DrIUT-7xHc/s320/2237.png",
     videos: [
-      { title: "Nepali AI Video Generation Tutorial - Step by step", duration: "15:40", videoUrl: "https://www.youtube.com/embed/W_P1V4A38Xo" },
-      { title: "Leonardo AI & Lexica Art for spectacular graphics", duration: "19:15", videoUrl: "https://www.youtube.com/embed/7XG0b_E52sE" },
-      { title: "Suno AI & Udio AI: Creating viral songs & background music", duration: "22:50", videoUrl: "https://www.youtube.com/embed/D3_qXvV6O_g" },
-      { title: "CapCut & AI-powered automatic video editing", duration: "17:25", videoUrl: "https://www.youtube.com/embed/5g1_0g_1A20" }
+      { title: "Nepali AI Video Generation Tutorial - Step by step", duration: "15:40", videoUrl: "https://www.youtube.com/embed/W_P1V4A38Xo" }
     ]
   },
   {
@@ -58,10 +51,7 @@ export const COURSES: Course[] = [
     ],
     image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhYjOG4lDyf5xe2U0X4FfB9tthigSJGm1DldgU9qU2CDbnWSrtNX2zX0GyiPKwGy0I-ostrdq0O02Okm1m90M6aFTH6T7TLfNIpRHQtpwBLY0gKXHdH4dPJoV3n-IReclxD56h8Tuuvyrb73XpaTfjEcw6s7JvZkRJDFxAp_kjAf3EUDAMCaWaBHgUKdcYD/s320/2241.jpg",
     videos: [
-      { title: "Suno AI v3 & v4 - Write Lyrics & Generate Music Tracks", duration: "20:10", videoUrl: "https://www.youtube.com/embed/D3_qXvV6O_g" },
-      { title: "Udio AI Professional Mode: Inpainting and extending tracks", duration: "18:50", videoUrl: "https://www.youtube.com/embed/V6_VpC6Q26o" },
-      { title: "Voice Conversion using RVC: Clone your voice or famous voices", duration: "25:30", videoUrl: "https://www.youtube.com/embed/m7D3_Yv8I4U" },
-      { title: "Mixing, mastering, and releasing your AI generated hits", duration: "14:15", videoUrl: "https://www.youtube.com/embed/5g1_0g_1A20" }
+      { title: "Suno AI v3 & v4 - Write Lyrics & Generate Music Tracks", duration: "20:10", videoUrl: "https://www.youtube.com/embed/D3_qXvV6O_g" }
     ]
   },
   {
@@ -78,10 +68,7 @@ export const COURSES: Course[] = [
     ],
     image: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhQkRMqywnYfxP8pjE04fdw157KvkRbC2yr4pHdnuVgWrGc3-yT5vmUFhLYyJXXIU3XrXS5mAyLxba3MEfAMb5Z4soHFa3hr69_4dYDU3qlJwIEIX1ImF7a5BeUOTYWM4Rbfj5-6Sz-H-8IMFe0-ErEH1KFqtJ1qJG8LnOqg-mm1mb1LQyD696l7iYl_2oi/s320/2239.jpg",
     videos: [
-      { title: "Gamma App & Tome AI: Create stunning slides in 1 minute", duration: "12:40", videoUrl: "https://www.youtube.com/embed/V6_VpC6Q26o" },
-      { title: "PowerPoint AI Add-ins & automated visual theme generation", duration: "15:20", videoUrl: "https://www.youtube.com/embed/m7D3_Yv8I4U" },
-      { title: "Designing high quality animated vectors and icons using AI", duration: "16:45", videoUrl: "https://www.youtube.com/embed/W_P1V4A38Xo" },
-      { title: "Dhruv Rathee animated documentary style presentations", duration: "22:10", videoUrl: "https://www.youtube.com/embed/7XG0b_E52sE" }
+      { title: "Gamma App & Tome AI: Create stunning slides in 1 minute", duration: "12:40", videoUrl: "https://www.youtube.com/embed/V6_VpC6Q26o" }
     ]
   }
 ];
