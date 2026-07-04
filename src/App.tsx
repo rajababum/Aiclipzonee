@@ -441,6 +441,92 @@ export default function App() {
           ))}
         </div>
 
+        {/* Testimonial slider / carousel */}
+        <section className="mt-20">
+          <div className="text-center mb-12">
+            <span className="bg-purple-100 text-purple-700 font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full border border-purple-200">
+              Real Stories
+            </span>
+            <h3 className="text-2xl md:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">
+              What Our Students Say ❤️
+            </h3>
+            <div className="w-16 h-1 bg-amber-500 mx-auto rounded-full mt-3"></div>
+            <p className="text-slate-500 mt-3 text-sm md:text-base">
+              हाम्रा विद्यार्थीहरूले कोर्ष लिएर आफ्नो करियर र कामलाई धेरै सजिलो बनाएका छन्।
+            </p>
+          </div>
+
+          <div 
+            className="max-w-3xl mx-auto overflow-hidden relative px-2"
+            onMouseEnter={() => setIsHoveredCarousel(true)}
+            onMouseLeave={() => setIsHoveredCarousel(false)}
+          >
+            {/* Testimonial Cards Layout */}
+            <div className="relative h-72 md:h-64 flex items-center justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -50 }}
+                  transition={{ duration: 0.4 }}
+                  className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-lg absolute inset-x-0 top-0 bottom-0 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-4xl w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center">
+                        {TESTIMONIALS[currentSlide].avatar}
+                      </div>
+                      <div>
+                        <strong className="text-base md:text-lg text-slate-900 block font-bold">
+                          {TESTIMONIALS[currentSlide].name}
+                        </strong>
+                        <span className="text-xs text-slate-500 block font-semibold">
+                          {TESTIMONIALS[currentSlide].location} • {TESTIMONIALS[currentSlide].course}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Stars */}
+                    <div className="flex gap-1 text-amber-400 mt-3">
+                      {[...Array(TESTIMONIALS[currentSlide].rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      ))}
+                    </div>
+
+                    <p className="text-slate-600 text-sm md:text-base italic leading-relaxed mt-4">
+                      "{TESTIMONIALS[currentSlide].text}"
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-4">
+                    <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
+                      <Check className="w-3 h-3" /> Verified Student
+                    </span>
+                    <span className="text-xs text-slate-400 font-semibold">
+                      Student {currentSlide + 1} of {TESTIMONIALS.length}
+                    </span>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Slider Navigation Dots */}
+            <div className="flex justify-center gap-2.5 mt-6">
+              {TESTIMONIALS.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    currentSlide === index ? 'bg-purple-700 scale-125' : 'bg-slate-300 hover:bg-slate-400'
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* What You Learn Section */}
         <section className="mt-24 relative">
           <div className="text-center mb-16 relative z-10">
@@ -584,92 +670,6 @@ export default function App() {
               </div>
             </motion.div>
 
-          </div>
-        </section>
-
-        {/* Testimonial slider / carousel */}
-        <section className="mt-20">
-          <div className="text-center mb-12">
-            <span className="bg-purple-100 text-purple-700 font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full border border-purple-200">
-              Real Stories
-            </span>
-            <h3 className="text-2xl md:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">
-              What Our Students Say ❤️
-            </h3>
-            <div className="w-16 h-1 bg-amber-500 mx-auto rounded-full mt-3"></div>
-            <p className="text-slate-500 mt-3 text-sm md:text-base">
-              हाम्रा विद्यार्थीहरूले कोर्ष लिएर आफ्नो करियर र कामलाई धेरै सजिलो बनाएका छन्।
-            </p>
-          </div>
-
-          <div 
-            className="max-w-3xl mx-auto overflow-hidden relative px-2"
-            onMouseEnter={() => setIsHoveredCarousel(true)}
-            onMouseLeave={() => setIsHoveredCarousel(false)}
-          >
-            {/* Testimonial Cards Layout */}
-            <div className="relative h-72 md:h-64 flex items-center justify-center">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentSlide}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -50 }}
-                  transition={{ duration: 0.4 }}
-                  className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-lg absolute inset-x-0 top-0 bottom-0 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center gap-4">
-                      <div className="text-4xl w-12 h-12 bg-slate-50 border border-slate-100 rounded-full flex items-center justify-center">
-                        {TESTIMONIALS[currentSlide].avatar}
-                      </div>
-                      <div>
-                        <strong className="text-base md:text-lg text-slate-900 block font-bold">
-                          {TESTIMONIALS[currentSlide].name}
-                        </strong>
-                        <span className="text-xs text-slate-500 block font-semibold">
-                          {TESTIMONIALS[currentSlide].location} • {TESTIMONIALS[currentSlide].course}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    {/* Stars */}
-                    <div className="flex gap-1 text-amber-400 mt-3">
-                      {[...Array(TESTIMONIALS[currentSlide].rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400" />
-                      ))}
-                    </div>
-
-                    <p className="text-slate-600 text-sm md:text-base italic leading-relaxed mt-4">
-                      "{TESTIMONIALS[currentSlide].text}"
-                    </p>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-4">
-                    <span className="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
-                      <Check className="w-3 h-3" /> Verified Student
-                    </span>
-                    <span className="text-xs text-slate-400 font-semibold">
-                      Student {currentSlide + 1} of {TESTIMONIALS.length}
-                    </span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Slider Navigation Dots */}
-            <div className="flex justify-center gap-2.5 mt-6">
-              {TESTIMONIALS.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    currentSlide === index ? 'bg-purple-700 scale-125' : 'bg-slate-300 hover:bg-slate-400'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
           </div>
         </section>
 
