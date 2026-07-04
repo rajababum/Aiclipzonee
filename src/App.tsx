@@ -349,86 +349,147 @@ export default function App() {
         </div>
 
         {/* What You Learn Section */}
-        <section className="mt-20 bg-linear-to-br from-slate-900 via-slate-950 to-indigo-950 text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden border border-slate-800">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-purple-500/10 rounded-full filter blur-3xl pointer-events-none"></div>
-          
-          <div className="text-center mb-12">
-            <span className="bg-amber-500/20 text-amber-300 font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full border border-amber-500/30">
-              Full-Stack Skills
+        <section className="mt-24 relative">
+          <div className="text-center mb-16 relative z-10">
+            <span className="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 font-extrabold text-xs tracking-wider uppercase px-4 py-1.5 rounded-full border border-purple-100 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-purple-500" /> Full-Stack Skills
             </span>
-            <h3 className="text-2xl md:text-4xl font-extrabold mt-3 tracking-tight">
-              तपाईंले के सिक्नुहुन्छ ? 👇
+            <h3 className="text-3xl md:text-4xl font-black mt-4 text-slate-950 tracking-tight leading-tight">
+              तपाईंले के सिक्नुहुन्छ ? <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600">What You Will Learn</span>
             </h3>
-            <div className="w-16 h-1 bg-amber-500 mx-auto rounded-full mt-3"></div>
+            <div className="w-12 h-1 bg-gradient-to-r from-purple-600 to-indigo-600 mx-auto rounded-full mt-4"></div>
+            <p className="text-slate-500 mt-4 text-sm md:text-base max-w-xl mx-auto font-medium">
+              हाम्रो व्यावहारिक कोर्षहरूमा समावेस गरिएका मुख्य विधा र सीपहरू
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             
             {/* Learn Card 1 */}
-            <div className="bg-slate-900/60 p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-amber-500/40 hover:shadow-xl transition duration-300">
-              <div className="w-12 h-12 bg-purple-500/10 text-purple-400 rounded-xl flex items-center justify-center mb-5 border border-purple-500/20">
-                <Sparkles className="w-6 h-6" />
+            <motion.div 
+              whileHover={{ y: -6 }}
+              className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-purple-500/20 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 border border-purple-100 shadow-2xs">
+                  <Sparkles className="w-7 h-7" />
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-3 tracking-tight">
+                  30+ Premium AI Tools
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                  ChatGPT, Midjourney, Runway, ElevenLabs, Leonardo आदि विश्वस्तरीय AI tools को पूर्ण प्रयोगात्मक प्रशिक्षण।
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2">30+ Premium AI Tools</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                ChatGPT, Midjourney, Runway, ElevenLabs, Leonardo आदि विश्वस्तरीय AI tools को पूर्ण प्रयोगात्मक प्रशिक्षण।
-              </p>
-            </div>
+              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2 text-xs font-black text-purple-600 uppercase tracking-wider">
+                <span>Complete Tools Master</span> • <span className="text-slate-400">Practical</span>
+              </div>
+            </motion.div>
 
             {/* Learn Card 2 */}
-            <div className="bg-slate-900/60 p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-amber-500/40 hover:shadow-xl transition duration-300">
-              <div className="w-12 h-12 bg-indigo-500/10 text-indigo-400 rounded-xl flex items-center justify-center mb-5 border border-indigo-500/20">
-                <Video className="w-6 h-6" />
+            <motion.div 
+              whileHover={{ y: -6 }}
+              className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-indigo-500/20 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 border border-indigo-100 shadow-2xs">
+                  <Video className="w-7 h-7" />
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-3 tracking-tight">
+                  AI Video Creation
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                  Talking Avatar भिडियो, Text to Video, Script-writing, र प्रोफेसनल एनिमेटेड भिडियो सम्पादन।
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2">AI Video Creation</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Talking Avatar भिडियो, Text to Video, Script-writing, र प्रोफेसनल एनिमेटेड भिडियो सम्पादन।
-              </p>
-            </div>
+              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2 text-xs font-black text-indigo-600 uppercase tracking-wider">
+                <span>Video Editing & Avatar</span> • <span className="text-slate-400">Viral Style</span>
+              </div>
+            </motion.div>
 
             {/* Learn Card 3 */}
-            <div className="bg-slate-900/60 p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-amber-500/40 hover:shadow-xl transition duration-300">
-              <div className="w-12 h-12 bg-pink-500/10 text-pink-400 rounded-xl flex items-center justify-center mb-5 border border-pink-500/20">
-                <ImageIcon className="w-6 h-6" />
+            <motion.div 
+              whileHover={{ y: -6 }}
+              className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-pink-500/20 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-14 h-14 bg-pink-50 text-pink-600 rounded-2xl flex items-center justify-center mb-6 border border-pink-100 shadow-2xs">
+                  <ImageIcon className="w-7 h-7" />
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-3 tracking-tight">
+                  AI Image Generation
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                  Stunning यथार्थपरक फोटोहरू, एनिमेसन, व्यावसायिक डिजिटल कला र थम्बनेलहरू सजिलै बनाउने।
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2">AI Image Generation</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Stunning यथार्थपरक फोटोहरू, एनिमेसन, व्यावसायिक डिजिटल कला र थम्बनेलहरू सजिलै बनाउने।
-              </p>
-            </div>
+              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2 text-xs font-black text-pink-600 uppercase tracking-wider">
+                <span>Art & Graphic Prompting</span> • <span className="text-slate-400">Pro Quality</span>
+              </div>
+            </motion.div>
 
             {/* Learn Card 4 */}
-            <div className="bg-slate-900/60 p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-amber-500/40 hover:shadow-xl transition duration-300">
-              <div className="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center mb-5 border border-amber-500/20">
-                <Music className="w-6 h-6" />
+            <motion.div 
+              whileHover={{ y: -6 }}
+              className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-amber-500/20 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 border border-amber-100 shadow-2xs">
+                  <Music className="w-7 h-7" />
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-3 tracking-tight">
+                  AI Song & Music Creation
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                  आफ्नै गीत, धून, संगीत कम्पोजिसन, भ्वाइस क्लोनिङ र ट्रेन्डिङ सामाजिक सञ्जाल संगीतको उत्पादन।
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2">AI Song & Music Creation</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                आफ्नै गीत, धून, संगीत कम्पोजिसन, भ्वाइस क्लोनिङ र ट्रेन्डिङ सामाजिक सञ्जाल संगीतको उत्पादन।
-              </p>
-            </div>
+              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2 text-xs font-black text-amber-600 uppercase tracking-wider">
+                <span>Audio & Voice Cloning</span> • <span className="text-slate-400">Vocal Hits</span>
+              </div>
+            </motion.div>
 
             {/* Learn Card 5 */}
-            <div className="bg-slate-900/60 p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-amber-500/40 hover:shadow-xl transition duration-300">
-              <div className="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center mb-5 border border-emerald-500/20">
-                <Presentation className="w-6 h-6" />
+            <motion.div 
+              whileHover={{ y: -6 }}
+              className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-emerald-500/20 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 border border-emerald-100 shadow-2xs">
+                  <Presentation className="w-7 h-7" />
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-3 tracking-tight">
+                  AI Presentation Making
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                  Dhruv Rathee शैलीमा उत्कृष्ट एनिमेटेड पावरपोइन्ट स्लाईड र व्यावसायिक कलेज/अफिस प्रस्तुतीकरण।
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2">AI Presentation Making</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                Dhruv Rathee शैलीमा उत्कृष्ट एनिमेटेड पावरपोइन्ट स्लाईड र व्यावसायिक कलेज/अफिस प्रस्तुतीकरण।
-              </p>
-            </div>
+              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2 text-xs font-black text-emerald-600 uppercase tracking-wider">
+                <span>Professional Slides</span> • <span className="text-slate-400">Dhruv Rathee Style</span>
+              </div>
+            </motion.div>
 
             {/* Learn Card 6 */}
-            <div className="bg-slate-900/60 p-6 md:p-8 rounded-2xl border border-slate-800 hover:border-amber-500/40 hover:shadow-xl transition duration-300">
-              <div className="w-12 h-12 bg-sky-500/10 text-sky-400 rounded-xl flex items-center justify-center mb-5 border border-sky-500/20">
-                <GraduationCap className="w-6 h-6" />
+            <motion.div 
+              whileHover={{ y: -6 }}
+              className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-sky-500/20 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+            >
+              <div>
+                <div className="w-14 h-14 bg-sky-50 text-sky-600 rounded-2xl flex items-center justify-center mb-6 border border-sky-100 shadow-2xs">
+                  <GraduationCap className="w-7 h-7" />
+                </div>
+                <h4 className="text-lg font-black text-slate-900 mb-3 tracking-tight">
+                  Practical Projects & Access
+                </h4>
+                <p className="text-slate-600 text-sm leading-relaxed font-medium">
+                  वास्तविक प्रयोगात्मक प्रोजेक्टहरू, कोर्स पूरा गरेपछि सर्टिफिकेट, र सधैंको लागि आजीवन पहुँच।
+                </p>
               </div>
-              <h4 className="text-lg font-bold text-white mb-2">Practical Projects & Access</h4>
-              <p className="text-slate-400 text-sm leading-relaxed">
-                वास्तविक प्रयोगात्मक प्रोजेक्टहरू, कोर्स पूरा गरेपछि सर्टिफिकेट, र सधैंको लागि आजीवन पहुँच।
-              </p>
-            </div>
+              <div className="mt-6 pt-4 border-t border-slate-50 flex items-center gap-2 text-xs font-black text-sky-600 uppercase tracking-wider">
+                <span>Verified Certificate</span> • <span className="text-slate-400">Lifetime Access</span>
+              </div>
+            </motion.div>
 
           </div>
         </section>
