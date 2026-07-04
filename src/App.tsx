@@ -137,6 +137,83 @@ export default function App() {
     showToast('तपाईंको सन्देश WhatsApp मा पठाइयो।', 'success');
   };
 
+  const getLocalAIResponse = (query: string): string => {
+    const q = query.toLowerCase().trim();
+    
+    // Greeting
+    if (q === 'hi' || q === 'hello' || q === 'namaste' || q.includes('नमस्ते') || q === 'hey') {
+      return `नमस्ते! 🙏 AI Clipzone Nepal को आधिकारिक च्याटबोटमा यहाँलाई स्वागत छ। म यहाँलाई हाम्रा प्रिमियम AI कोर्षहरू खरिद गर्न र सिक्न मद्दत गर्नेछु। तपाईंलाई के सम्बन्धी जानकारी चाहिन्छ सोध्नुहोस्! 😊`;
+    }
+
+    // Pricing
+    if (q.includes('price') || q.includes('कति') || q.includes('मूल्य') || q.includes('paisa') || q.includes('cost') || q.includes('rs') || q.includes('rupees') || q.includes('rate')) {
+      return `हाम्रा प्रिमियम कोर्षहरू र तिनको विशेष अफर मूल्यहरू यस प्रकार छन्:<br/><br/>
+      1. <strong>AI Master Class by Dhruv Rathee:</strong> मात्र Rs. 449 (Hindi, 30+ AI Tools)<br/>
+      2. <strong>AI Video, Image & Song Creation:</strong> मात्र Rs. 350 (Nepali)<br/>
+      3. <strong>AI Song Creation Course:</strong> मात्र Rs. 299 (Nepali/Hindi)<br/>
+      4. <strong>AI Presentation Making Course:</strong> मात्र Rs. 199 (Nepali/Hindi, Slides Creator)<br/><br/>
+      <i>सबै कोर्षहरूमा लाइफटाइम एक्सेस र सर्टिफिकेट उपलब्ध छ। खरिद गर्न कोर्ष कार्डको "Pay & Join Now" बटनमा क्लिक गर्नुहोस्!</i>`;
+    }
+
+    // Payment / How to buy / eSewa
+    if (q.includes('payment') || q.includes('तिर्ने') || q.includes('किन्ने') || q.includes('buy') || q.includes('esewa') || q.includes('khalti') || q.includes('qr') || q.includes('pay') || q.includes('purchase')) {
+      return `भुक्तानी गर्न अत्यन्तै सजिलो छ! तपाईंले <strong>eSewa, Khalti, IME Pay, वा Bank Transfer</strong> मार्फत FonePay QR स्क्यान गरेर तिर्न सक्नुहुन्छ। <br/><br/>
+      <strong>प्रक्रिया:</strong><br/>
+      १. कोर्ष सेक्सनमा गएर आफूलाई मनपर्ने कोर्षको <strong>"Pay & Join Now"</strong> बटन थिच्नुहोस्।<br/>
+      २. त्यहाँ देखाइएको FonePay QR स्क्यान गरी तोकिएको शुल्क भुक्तानी गर्नुहोस्।<br/>
+      ३. भुक्तानी गरिसकेपछि स्क्रीनसट हाम्रो आधिकारिक <strong>WhatsApp (976-3323268)</strong> मा पठाउनुहोस् र कोर्षको तत्काल पहुँच पाउनुहोस्।`;
+    }
+
+    // Contact / Support / WhatsApp / Phone
+    if (q.includes('contact') || q.includes('whatsapp') || q.includes('फोन') || q.includes('नम्बर') || q.includes('phone') || q.includes('number') || q.includes('support') || q.includes('help')) {
+      return `हाम्रो आधिकारिक सम्पर्क विवरणहरू यस प्रकार छन्:<br/>
+      • <strong>WhatsApp:</strong> <a href="https://wa.me/9779763323268" target="_blank" class="text-purple-600 font-extrabold underline">976-3323268</a> (वा +977 9763323268)<br/>
+      • <strong>सपोर्ट समय:</strong> २४/७ (तपाईं जुनसुकै बेला पनि म्यासेज पठाउन सक्नुहुन्छ)<br/><br/>
+      तपाईंले भुक्तानी गरेपछि स्क्रीनसट यही WhatsApp नम्बरमा पठाउनुपर्नेछ।`;
+    }
+
+    // Recorded or Live
+    if (q.includes('recorded') || q.includes('live') || q.includes('भिडियो') || q.includes('class') || q.includes('क्लास')) {
+      return `हाम्रा सबै कोर्षहरू पूर्ण रूपमा <strong>Recorded HD Lectures</strong> हुन्। यसमा कुनै पनि Live Class को झन्झट छैन। तपाईंले आफ्नो फुर्सदको समयमा (बिहान, दिउँसो, वा राती) जुनसुकै बेला पनि सजिलै भिडियोहरू हेरेर सिक्न सक्नुहुन्छ र दोहोर्याएर हेर्न पनि पाउनुहुन्छ।`;
+    }
+
+    // Access or Lifetime
+    if (q.includes('lifetime') || q.includes('एक्सेस') || q.includes('access') || q.includes('कति दिन') || q.includes('समय')) {
+      return `हो! कोर्ष खरिद गरेपछि तपाईंले <strong>Lifetime Access (आजीवन पहुँच)</strong> पाउनुहुन्छ। भविष्यमा थपिने सबै नयाँ भिडियोहरू र अपडेटहरू पनि तपाईंले बिल्कुलै नि:शुल्क पाउनुहुनेछ।`;
+    }
+
+    // Certificate
+    if (q.includes('certificate') || q.includes('प्रमाणपत्र') || q.includes('सर्टिफिकेट')) {
+      return `हो, प्रत्येक कोर्ष सफलतापूर्वक पूरा गरेपछि तपाईंले <strong>Professional Certificate of Completion</strong> प्राप्त गर्नुहुनेछ, जसलाई तपाईंले आफ्नो CV वा LinkedIn प्रोफाइलमा राख्न सक्नुहुन्छ।`;
+    }
+
+    // Specific Course: Dhruv Rathee style
+    if (q.includes('dhruv') || q.includes('rathee') || q.includes('master') || q.includes('30+')) {
+      return `<strong>AI Master Class by Dhruv Rathee (Hindi) - मात्र Rs. 449:</strong><br/>
+      यो कोर्षमा ChatGPT, Midjourney, Runway, ElevenLabs, Leonardo AI जस्ता ३० भन्दा बढी प्रिमियम AI tools को पूर्ण प्रयोगात्मक जानकारी समावेस छ। यो हाम्रो "Best Seller" कोर्ष हो।`;
+    }
+
+    // Specific Course: Song / Music
+    if (q.includes('song') || q.includes('music') || q.includes('गीत') || q.includes('संगीत') || q.includes('suno')) {
+      return `<strong>AI Song Creation Course - मात्र Rs. 299 (Nepali/Hindi):</strong><br/>
+      यसमा Suno v3/v4 को प्रयोग गरी आफ्नै लिरिक्स बनाउने, संगीत कम्पोज गर्ने, धून तयार गर्ने, भ्वाइस क्लोनिङ गर्ने र व्यावसायिक गीतहरू उत्पादन गर्ने तरिका सिकाइन्छ।`;
+    }
+
+    // Specific Course: Video
+    if (q.includes('video') || q.includes('भिडियो सम्पादन') || q.includes('avatar') || q.includes('एनिमेसन')) {
+      return `<strong>AI Video, Image & Song Creation - मात्र Rs. 350 (Nepali):</strong><br/>
+      यो नेपाली भाषाको पूर्ण कोर्ष हो जसमा Talking Avatar भिडियोहरू बनाउने, Text-to-Video, र प्रोफेसनल एनिमेटेड भिडियो सम्पादन गर्न सिकाइन्छ।`;
+    }
+
+    // Specific Course: Presentation / Slides / PPT
+    if (q.includes('presentation') || q.includes('slides') || q.includes('ppt') || q.includes('पावरपोइन्ट')) {
+      return `<strong>AI Presentation Making Course - मात्र Rs. 199 (Nepali/Hindi):</strong><br/>
+      यसमा Gamma App, Tome, PowerPoint AI को प्रयोग गरी Dhruv Rathee शैलीमा उत्कृष्ट एनिमेटेड स्लाइड र व्यावसायिक कलेज/अफिस प्रस्तुतीकरणहरू मिनेटमै बनाउन सिकाइन्छ।`;
+    }
+
+    return `धन्यवाद! कोर्ष तुरुन्त खरिद गर्न वा थप जानकारीका लागि कृपया हाम्रो आधिकारिक <strong>WhatsApp नम्बर <a href="https://wa.me/9779763323268" target="_blank" class="text-purple-600 font-extrabold underline">976-3323268</a></strong> मा सिधै सम्पर्क गर्नुहोस्। हामी तपाईंलाई तत्काल सहयोग गर्नेछौं!`;
+  };
+
   const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || chatInput;
     if (!text.trim() || isTyping) return;
@@ -161,8 +238,12 @@ export default function App() {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error('Server returned non-ok status');
+      }
+
       const data = await response.json();
-      const botReply = data.reply || "धन्यवाद! थप जानकारीका लागि हाम्रो आधिकारिक WhatsApp नम्बर 976-3323268 मा सम्पर्क गर्नुहोस्।";
+      const botReply = data.reply || getLocalAIResponse(text);
       
       setChatMessages(prev => [
         ...prev,
@@ -173,12 +254,15 @@ export default function App() {
         }
       ]);
     } catch (error) {
-      console.error('Chat API Error:', error);
+      console.warn('Chat API Error, falling back to local KB:', error);
+      
+      // Fallback seamlessly to the highly accurate local responder instead of breaking!
+      const botReply = getLocalAIResponse(text);
       setChatMessages(prev => [
         ...prev,
         {
           sender: 'bot',
-          text: "Oops! Request error. कृपया १ मिनेट पछि फेरि सोध्नुहोस् वा सिधै हाम्रो <strong>WhatsApp (976-3323268)</strong> मा जोडिनुहोस्!",
+          text: botReply,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
