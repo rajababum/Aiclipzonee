@@ -23,64 +23,13 @@ import {
   Bot, 
   User, 
   Check,
-  BookOpen,
-  LogIn,
-  LogOut,
-  LayoutDashboard,
-  Lock
+  BookOpen
 } from 'lucide-react';
 
 import { COURSES, TESTIMONIALS, FAQS } from './data';
 import { Course, ChatMessage } from './types';
 
-// Firebase imports
-import { auth } from './firebase';
-import { onAuthStateChanged, User as FirebaseUser, signOut } from 'firebase/auth';
-
-// Custom Components
-import LoginModal from './components/LoginModal';
-import MyLearning from './components/MyLearning';
-import AdminPanel from './components/AdminPanel';
-
 export default function App() {
-  // Authentication & Navigation state
-  const [user, setUser] = useState<any | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [activeTab, setActiveTab] = useState<'home' | 'learning' | 'admin'>('home');
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [adminPasscode, setAdminPasscode] = useState('');
-  const [isPasscodeAdmin, setIsPasscodeAdmin] = useState(false);
-
-  // Auth subscriber
-  useEffect(() => {
-    // Restore demo user session if present
-    const storedDemo = localStorage.getItem('demo_user_session');
-    if (storedDemo) {
-      try {
-        const parsed = JSON.parse(storedDemo);
-        setUser(parsed);
-        const email = parsed.email || '';
-        const hasAdminRole = email === 'ai.clipzone.edu@gmail.com';
-        setIsAdmin(hasAdminRole);
-        return;
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (localStorage.getItem('demo_user_session')) return; // skip if mock session is active
-      setUser(currentUser);
-      if (currentUser) {
-        const email = currentUser.email || '';
-        const hasAdminRole = email === 'ai.clipzone.edu@gmail.com';
-        setIsAdmin(hasAdminRole);
-      } else {
-        setIsAdmin(false);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
   // Course details modal state
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   // QR modal state
@@ -300,87 +249,10 @@ export default function App() {
         </div>
       </div>
 
-      {/* Sub Header Tab Selector */}
-      <div className="bg-white border-b border-slate-200 sticky top-[53px] z-50 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
-          <div className="flex items-center gap-1 md:gap-2 overflow-x-auto h-full scrollbar-none">
-            
-            <button
-              onClick={() => setActiveTab('home')}
-              className={`flex items-center gap-1.5 px-4 h-full border-b-2 font-bold text-xs md:text-sm transition-all duration-150 cursor-pointer ${
-                activeTab === 'home'
-                  ? 'border-purple-700 text-purple-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              🏠 Home & Catalog
-            </button>
-
-            <button
-              onClick={() => setActiveTab('learning')}
-              className={`flex items-center gap-1.5 px-4 h-full border-b-2 font-bold text-xs md:text-sm transition-all duration-150 cursor-pointer ${
-                activeTab === 'learning'
-                  ? 'border-purple-700 text-purple-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
-            >
-              🎓 My Learning
-            </button>
-
-            {isAdmin && (
-              <button
-                onClick={() => setActiveTab('admin')}
-                className={`flex items-center gap-1.5 px-4 h-full border-b-2 font-bold text-xs md:text-sm transition-all duration-150 cursor-pointer ${
-                  activeTab === 'admin'
-                    ? 'border-rose-600 text-rose-600'
-                    : 'border-transparent text-slate-500 hover:text-rose-600'
-                }`}
-              >
-                🛠️ Admin Panel
-              </button>
-            )}
-          </div>
-
-          {/* User Sign In/Sign Out status button */}
-          <div className="flex items-center gap-2">
-            {user ? (
-              <div className="flex items-center gap-2">
-                <span className="hidden md:inline text-xs font-semibold text-slate-500">
-                  {user.displayName || user.email?.split('@')[0]}
-                </span>
-                <button
-                  onClick={async () => {
-                    localStorage.removeItem('demo_user_session');
-                    await signOut(auth).catch(() => {});
-                    setUser(null);
-                    showToast('Logged out successfully.', 'info');
-                    setActiveTab('home');
-                  }}
-                  className="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer"
-                >
-                  <LogOut className="w-3.5 h-3.5" /> Sign Out
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setIsLoginModalOpen(true)}
-                className="flex items-center gap-1 bg-purple-700 hover:bg-purple-800 text-white px-4 py-1.5 rounded-xl text-xs font-bold transition shadow-xs cursor-pointer"
-              >
-                <LogIn className="w-3.5 h-3.5" /> Login / Register
-              </button>
-            )}
-          </div>
-
-        </div>
-      </div>
-
-
       {/* Main Container for Course List */}
       <main className="max-w-6xl mx-auto px-4 py-12">
-        {activeTab === 'home' && (
-          <>
-            {/* Course Catalog Title */}
-            <div className="text-center mb-12">
+        {/* Course Catalog Title */}
+        <div className="text-center mb-12">
           <h3 className="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900 flex items-center justify-center gap-2">
             <BookOpen className="w-7 h-7 text-purple-600" />
             Our Premium AI Courses
@@ -869,70 +741,6 @@ export default function App() {
 
           </div>
         </section>
-        </>
-        )}
-
-        {activeTab === 'learning' && (
-          user ? (
-            <MyLearning user={user} onToast={showToast} />
-          ) : (
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100 max-w-2xl mx-auto text-center relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-purple-700 to-indigo-800" />
-              <div className="w-16 h-16 bg-purple-50 text-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-black text-slate-900 mb-3">Login to Access Your Courses</h3>
-              <p className="text-slate-500 text-sm md:text-base max-w-md mx-auto mb-8 leading-relaxed">
-                हाम्रो AI कोर्षका भिडियोहरू हेर्न, आफ्नो Course ID दर्ता गर्न, र प्रमाण-पत्र प्राप्त गर्न कृपया आफ्नो एकाउन्टमा लगइन गर्नुहोस्।
-              </p>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left max-w-lg mx-auto mb-8">
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-center">
-                  <span className="block text-purple-700 font-extrabold text-xs mb-1">📽️ Video Player</span>
-                  <p className="text-[11px] text-slate-500 font-medium">Recorded HD lectures anytime.</p>
-                </div>
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-center">
-                  <span className="block text-amber-600 font-extrabold text-xs mb-1">🔑 Access Request</span>
-                  <p className="text-[11px] text-slate-500 font-medium">Instant activation via Course ID.</p>
-                </div>
-                <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-100 text-center">
-                  <span className="block text-emerald-600 font-extrabold text-xs mb-1">🎓 Certificate</span>
-                  <p className="text-[11px] text-slate-500 font-medium">Verify your skills online.</p>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setIsLoginModalOpen(true)}
-                className="inline-flex items-center gap-2 bg-purple-700 hover:bg-purple-800 text-white font-extrabold px-8 py-4 rounded-xl shadow-lg shadow-purple-600/10 hover:shadow-xl transition duration-200 cursor-pointer"
-              >
-                <LogIn className="w-5 h-5" /> Start Learning Now (Sign In / Register)
-              </button>
-            </div>
-          )
-        )}
-
-        {activeTab === 'admin' && (
-          isAdmin ? (
-            <AdminPanel onToast={showToast} />
-          ) : (
-            <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-slate-100 max-w-md mx-auto text-center relative overflow-hidden">
-              <div className="absolute top-0 inset-x-0 h-1.5 bg-rose-600" />
-              <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Lock className="w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-black text-slate-900 mb-2">Admin Panel Restricted</h3>
-              <p className="text-slate-500 text-xs md:text-sm max-w-sm mx-auto mb-6">
-                This dashboard is strictly restricted to the administrator. Please log in with the administrator email <strong>ai.clipzone.edu@gmail.com</strong>.
-              </p>
-              <button
-                onClick={() => setIsLoginModalOpen(true)}
-                className="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-extrabold px-6 py-3 rounded-xl shadow-lg shadow-rose-600/10 transition duration-200 cursor-pointer"
-              >
-                <LogIn className="w-4 h-4" /> Sign In as Admin
-              </button>
-            </div>
-          )
-        )}
 
       </main>
 
@@ -1256,18 +1064,6 @@ export default function App() {
         </AnimatePresence>
 
       </div>
-
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
-        onSuccess={(msg) => showToast(msg, 'success')}
-        onMockLogin={(mockUser) => {
-          setUser(mockUser);
-          const email = mockUser.email || '';
-          const hasAdminRole = email === 'ai.clipzone.edu@gmail.com';
-          setIsAdmin(hasAdminRole);
-        }}
-      />
 
     </div>
   );
