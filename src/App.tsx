@@ -62,6 +62,7 @@ export default function App() {
     }
   ]);
   const [chatInput, setChatInput] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Toast helper
@@ -136,35 +137,9 @@ export default function App() {
     showToast('तपाईंको सन्देश WhatsApp मा पठाइयो।', 'success');
   };
 
-  // Chatbot standard response matching logic
-  const getAIResponseText = (query: string): string => {
-    const q = query.toLowerCase().trim();
-    if (q.includes('price') || q.includes('कति') || q.includes('मूल्य') || q.includes('paisa') || q.includes('cost')) {
-      return `हाम्रा प्रिमियम कोर्षहरू यस प्रकार छन्:<br/>
-      • AI Master Class by Dhruv Rathee: <strong>Rs. 449</strong> (Hindi)<br/>
-      • AI Video, Image & Song Creation: <strong>Rs. 350</strong> (Nepali)<br/>
-      • AI Song Creation Course: <strong>Rs. 299</strong> (Nepali/Hindi)<br/>
-      • AI Presentation Making Course: <strong>Rs. 199</strong> (Nepali/Hindi)<br/><br/>
-      <i>सबै कोर्षहरूमा लाइफटाइम एक्सेस र सर्टिफिकेट उपलब्ध छ।</i>`;
-    }
-    if (q.includes('recorded') || q.includes('live') || q.includes('भिडियो') || q.includes('कसरी सिक्ने')) {
-      return `सबै कोर्षहरू पूर्ण रूपमा <strong>Recorded HD Videos</strong> हुन्। यसमा कुनै पनि Live Class को झन्झट छैन। तपाईं आफ्नो फुर्सदको समयमा (दिउँसो, राती, वा अफलाइन) जुनसुकै बेला पनि हेर्न र सिक्न सक्नुहुन्छ।`;
-    }
-    if (q.includes('lifetime') || q.includes('एक्सेस') || q.includes('access') || q.includes('कति दिन')) {
-      return `हो! कोर्ष खरिद गरेपछि तपाईंले <strong>Lifetime Access (आजीवन पहुँच)</strong> पाउनुहुन्छ। भविष्यमा आउने सबै नयाँ अपडेट र नयाँ भिडियोहरू पनि तपाईंले बिल्कुलै नि:शुल्क प्राप्त गर्नुहुनेछ।`;
-    }
-    if (q.includes('payment') || q.includes('कसरी तिर्ने') || q.includes('pay') || q.includes('esewa') || q.includes('khalti') || q.includes('qr')) {
-      return `भुक्तानी गर्न अत्यन्तै सजिलो छ! तपाईंले <strong>eSewa, Khalti, IME Pay, वा Bank Transfer</strong> मार्फत सिधै QR स्क्यान गरेर तिर्न सक्नुहुन्छ। भुक्तानी गरिसकेपछि स्क्रीनसट <strong>WhatsApp (976-3323268)</strong> मा पठाउनुहोस् र कोर्षको तत्काल पहुँच पाउनुहोस्।`;
-    }
-    if (q.includes('certificate') || q.includes('प्रमाणपत्र') || q.includes('सर्टिफिकेट')) {
-      return `हो, प्रत्येक कोर्ष सफलतापूर्वक पूरा गरेपछि तपाईंले <strong>Professional Certificate of Completion</strong> प्राप्त गर्नुहुनेछ, जसलाई तपाईंले आफ्नो CV वा LinkedIn मा राख्न सक्नुहुन्छ।`;
-    }
-    return `धन्यवाद! थप जानकारी वा कोर्ष तुरुन्त खरिद गर्नको लागि हाम्रो आधिकारिक <strong>WhatsApp नम्बर 976-3323268</strong> मा सिधै च्याट गर्नुहोस्। हामी तपाईंलाई १ मिनेटमै सहयोग गर्नेछौं!`;
-  };
-
-  const handleSendMessage = (textToSend?: string) => {
+  const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || chatInput;
-    if (!text.trim()) return;
+    if (!text.trim() || isTyping) return;
 
     // Add user message
     const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -172,17 +147,44 @@ export default function App() {
     
     setChatMessages(prev => [...prev, userMsg]);
     if (!textToSend) setChatInput('');
+    setIsTyping(true);
 
-    // Generate bot reply after short delay
-    setTimeout(() => {
-      const replyText = getAIResponseText(text);
-      const botMsg: ChatMessage = { 
-        sender: 'bot', 
-        text: replyText, 
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
-      };
-      setChatMessages(prev => [...prev, botMsg]);
-    }, 600);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: text,
+          history: chatMessages.map(msg => ({ sender: msg.sender, text: msg.text }))
+        }),
+      });
+
+      const data = await response.json();
+      const botReply = data.reply || "धन्यवाद! थप जानकारीका लागि हाम्रो आधिकारिक WhatsApp नम्बर 976-3323268 मा सम्पर्क गर्नुहोस्।";
+      
+      setChatMessages(prev => [
+        ...prev,
+        {
+          sender: 'bot',
+          text: botReply,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } catch (error) {
+      console.error('Chat API Error:', error);
+      setChatMessages(prev => [
+        ...prev,
+        {
+          sender: 'bot',
+          text: "Oops! Request error. कृपया १ मिनेट पछि फेरि सोध्नुहोस् वा सिधै हाम्रो <strong>WhatsApp (976-3323268)</strong> मा जोडिनुहोस्!",
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   // Open QR modal from Course Modal
@@ -1064,6 +1066,20 @@ export default function App() {
                     )}
                   </div>
                 ))}
+                {isTyping && (
+                  <div className="flex items-start gap-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 text-xs">
+                      <Bot className="w-4 h-4 text-purple-600 animate-pulse" />
+                    </div>
+                    <div className="max-w-[80%] flex flex-col">
+                      <div className="bg-white text-slate-800 border border-slate-100 p-3.5 rounded-2xl rounded-tl-none shadow-xs flex items-center gap-1.5">
+                        <span className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div ref={chatEndRef} />
               </div>
 
